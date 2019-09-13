@@ -1,15 +1,18 @@
-package cn.edu.cqupt.mislab.excellentroom;
+package cn.edu.cqupt.mislab.work;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@MapperScan("cn.edu.cqupt.mislab.excellentroom.dao")
+/**
+ * @author sl spx
+ */
+@MapperScan("cn.edu.cqupt.mislab.work.dao")
 @SpringBootApplication
-public class ExcellentRoomApplication {
+public class WorkApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ExcellentRoomApplication.class, args);
+        SpringApplication.run(WorkApplication.class, args);
     }
 
 }
