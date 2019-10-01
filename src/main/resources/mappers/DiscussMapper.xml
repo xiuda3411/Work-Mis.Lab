@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybaits.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.cqupt.mislab.work.dao.DiscussDao">
+    <resultMap id="Discuss" type="cn.edu.cqupt.mislab.work.domain.entity.Discuss">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="praise" column="praise" jdbcType="INTEGER"/>
+        <result property="text" column="text" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="workId" column="work_id" jdbcType="INTEGER"/>
+        <result property="missionId" column="mission_id" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="discuss">
+        id,praise,text,user_id,work_id,mission_id,time
+    </sql>
+    <!--添加作业处的评论-->
+    <insert id="addWorkDiscuss">
+        INSERT discuss(discuss.user_id,discuss.work_id,text)
+        VALUE (#{userId},#{workId},#{text})
+    </insert>
+    <!--添加任务处的评论-->
+    <insert id="addMissionDiscuss">
+        INSERT discuss(discuss.user_id,discuss.mission_id,text)
+        VALUE (#{userId},#{missionId},#{text})
+    </insert>
+    <!--删除评论-->
+    <delete id="deleteDiscuss">
+        DELETE FROM discuss
+        WHERE id = #{discussId}
+    </delete>
+    <!--查询作业处的评论-->
+    <select id="searchWorkDiscuss" parameterType="integer" resultType="cn.edu.cqupt.mislab.work.domain.entity.Discuss">
+        SELECT
+        <include refid="discuss"/>
+        FROM discuss
+        WHERE work_id = #{workId}
+    </select>
+    <!--查询任务处的评论-->
+    <select id="searchMissionDiscuss" resultType="cn.edu.cqupt.mislab.work.domain.entity.Discuss">
+        SELECT
+        <include refid="discuss"/>
+        FROM discuss
+        WHERE discuss.mission_id = #{missionId}
+    </select>
+    <!--修改评论-->
+    <update id="updateDiscuss">
+        UPDATE discuss
+        SET discuss.text = #{text}
+        WHERE discuss.id = #{discussId}
+    </update>
+    <!--点赞评论-->
+    <update id="addPraise">
+        UPDATE discuss
+        SET praise = #{praise}
+        WHERE discuss.id = #{discussId}
+    </update>
+    <!--评论赞数查询-->
+    <select id="searchPraise" resultType="java.lang.Integer">
+        SELECT praise
+        FROM discuss
+        WHERE id = #{discussId}
+    </select>
+</mapper>
