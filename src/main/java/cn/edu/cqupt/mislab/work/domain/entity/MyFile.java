@@ -13,16 +13,18 @@ import java.text.DecimalFormat;
  **/
 @ToString
 @Data
-public class File {
+public class MyFile {
     private int id;
-    private String agreement;
-    private String host;
-    private String domain;
-    private String business;
+    private String fileName;
     private String file;
-    private int creatIp;
     private int userId;
     private String md5;
-    private String hash;
     private float size;
+    public MyFile(String fileName, String file, int userId, String md5, float size) {
+        this.fileName = fileName;
+        this.file = file;
+        this.userId = userId;
+        this.md5 = md5;
+        this.size = size;
+    }
 }

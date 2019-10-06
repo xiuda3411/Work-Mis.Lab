@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybaits.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.cqupt.mislab.work.dao.FileDao">
+    <insert id="uploadFile">
+        INSERT file_upload(file_name,user_id,file,md5,size)
+        VALUE (#{fileName},#{userId},#{file},#{md5},#{size})
+    </insert>
+    <select id="getMd5" resultType="java.lang.String">
+        SELECT md5
+        FROM file_upload
+        WHERE id = #{fid}
+    </select>
+    <sql id="comparedMd5">
+
+    </sql>
+    <select id="comparedMd5" resultType="java.lang.String">
+        SELECT md5
+        FROM file_upload
+        WHERE md5 = #{md5}
+    </select>
+    <select id="getFile" resultType="java.lang.String">
+        SELECT file
+        FROM file_upload
+        WHERE id = #{id}
+    </select>
+    <select id="getFileName" resultType="java.lang.String">
+        SELECT file_name
+        FROM file_upload
+        WHERE id = #{id}
+    </select>
+</mapper>
