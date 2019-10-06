@@ -26,22 +26,26 @@ public class DiscussServiceImpl implements DiscussService {
     @Override
     public Result addDiscuss(Integer userId, Integer missionOrWorkId, String text,Integer type) {
         try {
+            Integer mission = 1;
+            Integer work = 2;
             Map<String,Object> map = new HashMap<>(3);
-            if (type == 1){
+            if (type.equals(mission)){
                 ServiceUtil.insertSuccess(discussDao.addMissionDiscuss(userId, missionOrWorkId, text));
                 map.put("评论人id",userId);
                 map.put("评论任务id",missionOrWorkId);
                 map.put("评论文本",text);
-            } else {
+            }if (type.equals(work)){
                 ServiceUtil.insertSuccess(discussDao.addWorkDiscuss(userId, missionOrWorkId, text));
                 map.put("评论人id",userId);
                 map.put("评论作业id",missionOrWorkId);
                 map.put("评论文本",text);
+            }else {
+                throw new MyException(ResultEnum.NOTEXIST);
             }
             return ResultUtil.success(map);
         } catch (MyException e) {
             e.printStackTrace();
-            return ResultUtil.isExist();
+            return ResultUtil.notExist();
         }
     }
 
