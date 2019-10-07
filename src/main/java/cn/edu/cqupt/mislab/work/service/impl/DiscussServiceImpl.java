@@ -26,15 +26,15 @@ public class DiscussServiceImpl implements DiscussService {
     @Override
     public Result addDiscuss(Integer userId, Integer missionOrWorkId, String text,Integer type) {
         try {
-            Integer mission = 1;
-            Integer work = 2;
+            int mission = 1;
+            int work = 2;
             Map<String,Object> map = new HashMap<>(3);
-            if (type.equals(mission)){
+            if (type == mission){
                 ServiceUtil.insertSuccess(discussDao.addMissionDiscuss(userId, missionOrWorkId, text));
                 map.put("评论人id",userId);
                 map.put("评论任务id",missionOrWorkId);
                 map.put("评论文本",text);
-            }if (type.equals(work)){
+            }if (type == work){
                 ServiceUtil.insertSuccess(discussDao.addWorkDiscuss(userId, missionOrWorkId, text));
                 map.put("评论人id",userId);
                 map.put("评论作业id",missionOrWorkId);
