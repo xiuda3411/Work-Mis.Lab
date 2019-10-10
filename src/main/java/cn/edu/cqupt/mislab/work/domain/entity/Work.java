@@ -11,10 +11,10 @@ import lombok.ToString;
  **/
 @Data
 @ToString
-public class StudentWork {
+public class Work {
     private int id;
     private int userId;
     private int missionId;
     private int score;
-    private String text;
+    private int fileId;
 }

@@ -13,7 +13,8 @@ import lombok.ToString;
 @ToString
 public class Mission {
     private int id;
-    private int userId;
-    private int type;
-    private String text;
+    private int direction;
+    private int time;
+    private int fileId;
+    private String context;
 }

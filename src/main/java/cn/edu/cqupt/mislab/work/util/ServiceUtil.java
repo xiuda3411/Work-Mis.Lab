@@ -26,7 +26,7 @@ public class ServiceUtil {
      * @param flag
      * @throws MyException
      */
-    public static void deleteSuccess(boolean flag) throws MyException {
+    public static void deleteSuccess(Boolean flag) throws MyException {
         if(!flag){
             throw new MyException(ResultEnum.NOTEXIST);
         }
