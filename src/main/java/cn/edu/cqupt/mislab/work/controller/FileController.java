@@ -30,23 +30,21 @@ public class FileController {
 
     @ApiOperation(value = "文件上传")
     @RequestMapping(value = "/upload",method = RequestMethod.POST)
-    public Result upload(@RequestParam("file") MultipartFile file, HttpServletRequest request, HttpSession session) {
-        Integer userId = GetUtil.getUserId(request);
+    public Result upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
         try {
-            ControllerUtil.userIdIsNull(userId);
+            ControllerUtil.userIdIsNull(request);
         } catch (MyException e) {
             e.printStackTrace();
             return ResultUtil.notLogin();
         }
-        return fileService.uploadFile(file,userId);
+        return fileService.uploadFile(file);
     }
 
     @ApiOperation(value = "文件批量上传")
     @RequestMapping(value = "/batch",method = RequestMethod.POST)
     public Result uploadMultipleFiles(HttpServletRequest request) {
-        Integer userId = GetUtil.getUserId(request);
         try {
-            ControllerUtil.userIdIsNull(userId);
+            ControllerUtil.userIdIsNull(request);
         } catch (MyException e) {
             e.printStackTrace();
             return ResultUtil.notLogin();
@@ -57,9 +55,8 @@ public class FileController {
     @ApiOperation(value = "文件下载")
     @RequestMapping(value = "/download",method = RequestMethod.GET)
         public Result downloadFile(Integer fid,HttpServletRequest request,HttpServletResponse response) {
-        Integer userId = GetUtil.getUserId(request);
         try {
-            ControllerUtil.userIdIsNull(userId);
+            ControllerUtil.userIdIsNull(request);
         } catch (MyException e) {
             e.printStackTrace();
             return ResultUtil.notLogin();

@@ -15,18 +15,11 @@ public interface FileDao {
     /**
      * 上传文件的各种信息
      * @param fileName
-     * @param userId
      * @param md5
-     * @param size
+     * @param filePath
      * @return
      */
-    Boolean uploadFile(@Param("fileName")String fileName,@Param("file")String file,@Param("userId")Integer userId,@Param("md5")String md5,@Param("size")long size);
-    /**
-     * 通过文件id获取md5值
-     * @param fid
-     * @return
-     */
-    String getMd5(@Param("fid")Integer fid);
+    Boolean uploadFile(@Param("fileName")String fileName,@Param("filePath")String filePath,@Param("md5")String md5);
     /**
      * 比对md5值是否已存在
      * @param md5
@@ -35,16 +28,10 @@ public interface FileDao {
     String comparedMd5(@Param("md5")String md5);
 
     /**
-     * 通过文件id获取文件的下载地址
+     * 通过文件id获取文件的信息
      * @param id
      * @return
      */
-    String getFile(@Param("id")Integer id);
+    MyFile getFile(@Param("id")Integer id);
 
-    /**
-     * 通过文件id获取文件名
-     * @param id
-     * @return
-     */
-    String getFileName(@Param("id")Integer id);
 }

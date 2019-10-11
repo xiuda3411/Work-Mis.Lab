@@ -13,11 +13,11 @@ import java.security.MessageDigest;
  * @author: 宋丽
  * @create: 2019-10-05 21:30
  **/
-public class UploadUtils {
+public class FileUtils {
 
     // 项目根路径下的目录  -- SpringBoot static 目录相当于是根路径下（SpringBoot 默认）
 
-    public final static String UPLOAD_PATH_PREFIX = "static/upload/works";
+    public final static String UPLOAD_PATH_PREFIX = "static/upload";
 
     public static File getFilePath(){
 
@@ -37,7 +37,7 @@ public class UploadUtils {
      * @param file
      * @return
      */
-    public static String getFileMD5String(MultipartFile file) {
+    public static String getFileMd5String(MultipartFile file) {
         try {
             MessageDigest mMessageDigest = null;
             mMessageDigest = MessageDigest.getInstance("MD5");
@@ -53,6 +53,21 @@ public class UploadUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static boolean delFile(File file) {
+        if (!file.exists()) {
+            return false;
+        }
+
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            assert files != null;
+            for (File f : files) {
+                delFile(f);
+            }
+        }
+        return file.delete();
     }
 
 }

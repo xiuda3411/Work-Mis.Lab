@@ -1,11 +1,12 @@
 package cn.edu.cqupt.mislab.work.service.impl;
 import cn.edu.cqupt.mislab.work.constant.ResultEnum;
 import cn.edu.cqupt.mislab.work.dao.FileDao;
+import cn.edu.cqupt.mislab.work.domain.entity.MyFile;
 import cn.edu.cqupt.mislab.work.domain.po.Result;
 import cn.edu.cqupt.mislab.work.exception.MyException;
 import cn.edu.cqupt.mislab.work.service.FileService;
 import cn.edu.cqupt.mislab.work.util.ResultUtil;
-import cn.edu.cqupt.mislab.work.util.UploadUtils;
+import cn.edu.cqupt.mislab.work.util.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -15,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @program: work-Mis.Lab
@@ -30,11 +30,9 @@ public class FileServiceImpl implements FileService {
     private FileDao fileDao;
 
     @Override
-    public Result uploadFile(MultipartFile file,Integer userId) {
+    public Result uploadFile(MultipartFile file) {
         try {
-            Map<String,Object> map = new HashMap<>(7);
-            long size = file.getSize();
-            String md5 = UploadUtils.getFileMD5String(file);
+            String md5 = FileUtils.getFileMd5String(file);
             String flag = fileDao.comparedMd5(md5);
             if (flag != null){
                 throw new MyException(ResultEnum.ISEXIST);
@@ -48,7 +46,7 @@ public class FileServiceImpl implements FileService {
             assert fileName != null;
             String suffixName = fileName.substring(fileName.lastIndexOf("."));
             // 设置文件存储路径
-            String filePath = UploadUtils.getFilePath().getAbsolutePath()+File.separator+md5+File.separator+fileName;
+            String filePath = FileUtils.getFilePath().getAbsolutePath()+File.separator+md5+File.separator+fileName;
             //输出文件夹绝对路径
             System.out.println(filePath);
             //构建真实的文件路径
@@ -56,13 +54,8 @@ public class FileServiceImpl implements FileService {
             System.out.println(newFile.getAbsolutePath());
             //上传文件到绝对路径
             file.transferTo(newFile);
-            map.put("fileName",fileName);
-            map.put("filePath",filePath);
-            map.put("userId",userId);
-            map.put("md5",md5);
-            map.put("size",size);
-            fileDao.uploadFile(fileName,filePath,userId,md5,size);
-            return ResultUtil.success(map);
+            fileDao.uploadFile(fileName,filePath,md5);
+            return ResultUtil.success();
         } catch (IOException | MyException e) {
             e.printStackTrace();
             return ResultUtil.error();
@@ -72,23 +65,17 @@ public class FileServiceImpl implements FileService {
     @Override
     public Result downloadFile(Integer id, HttpServletResponse response) {
 
-        Map<String,Object> map = new HashMap<>(7);
+        MyFile myFile = fileDao.getFile(id);
 
-        String filePath = fileDao.getFile(id);
-
-        String md5 = fileDao.getMd5(id);
-
-        String fileName = fileDao.getFileName(id);
-
-        if (md5 != null) {
+        if (myFile.getMd5() != null) {
             //设置文件路径
-            File file = new File(filePath);
+            File file = new File(myFile.getFilePath());
             //File file = new File(realPath , fileName);
             if (file.exists()) {
                 // 设置强制下载不打开
                 response.setContentType("application/force-download");
                 // 设置文件名
-                response.addHeader("Content-Disposition", "attachment;fileName=" + fileName);
+                response.addHeader("Content-Disposition", "attachment;fileName=" + myFile.getFileName());
                 byte[] buffer = new byte[1024];
                 FileInputStream fis = null;
                 BufferedInputStream bis = null;
@@ -101,10 +88,7 @@ public class FileServiceImpl implements FileService {
                         os.write(buffer, 0, i);
                         i = bis.read(buffer);
                     }
-                    map.put("fileName",fileName);
-                    map.put("filePath",filePath);
-                    map.put("md5",md5);
-                    return ResultUtil.success(map);
+                    return ResultUtil.success(myFile);
                 } catch (Exception e) {
                     e.printStackTrace();
                     return ResultUtil.error();
@@ -136,8 +120,8 @@ public class FileServiceImpl implements FileService {
         BufferedOutputStream stream = null;
         for (int i = 0; i < files.size(); ++i) {
             file = files.get(i);
-            String md5 = UploadUtils.getFileMD5String(file);
-            File filePath = UploadUtils.getFilePath();
+            String md5 = FileUtils.getFileMd5String(file);
+            File filePath = FileUtils.getFilePath();
             if (!file.isEmpty()) {
                 try {
                     byte[] bytes = file.getBytes();

@@ -1,4 +1,5 @@
 package cn.edu.cqupt.mislab.work.dao;
+import cn.edu.cqupt.mislab.work.domain.entity.MyFile;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +23,7 @@ public class FileDaoTest {
     @Transactional
     @Test
     public void uploadFile(){
-        boolean flag = fileDao.uploadFile("1.txt","文件路径",12433545, "3543623412",2435);
+        boolean flag = fileDao.uploadFile("1.txt","文件路径", "3543623412");
         Assert.assertTrue(flag);
     }
 
@@ -36,21 +37,7 @@ public class FileDaoTest {
     @Transactional
     @Test
     public void getFile(){
-        String flag = fileDao.getFile(4);
-        System.out.println(flag);
-    }
-
-    @Transactional
-    @Test
-    public void getFileName(){
-        String flag = fileDao.getFileName(4);
-        System.out.println(flag);
-    }
-
-    @Transactional
-    @Test
-    public void getMd5(){
-        String flag = fileDao.getMd5(4);
-        System.out.println(flag);
+        MyFile myFile = fileDao.getFile(4);
+        System.out.println(myFile.toString());
     }
 }

@@ -16,15 +16,6 @@ import java.text.DecimalFormat;
 public class MyFile {
     private int id;
     private String fileName;
-    private String file;
-    private int userId;
+    private String filePath;
     private String md5;
-    private float size;
-    public MyFile(String fileName, String file, int userId, String md5, float size) {
-        this.fileName = fileName;
-        this.file = file;
-        this.userId = userId;
-        this.md5 = md5;
-        this.size = size;
-    }
 }

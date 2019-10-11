@@ -3,6 +3,9 @@ package cn.edu.cqupt.mislab.work.domain.entity;
 import lombok.Data;
 import lombok.ToString;
 
+import java.sql.Timestamp;
+
+
 /**
  * @program: work-Mis.Lab
  * @description: 任务实体类
@@ -16,5 +19,7 @@ public class Mission {
     private int direction;
     private int time;
     private int fileId;
+    private Timestamp createTime;
+    private String fileName = "";
     private String context;
 }

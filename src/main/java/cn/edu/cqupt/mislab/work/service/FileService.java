@@ -12,7 +12,7 @@ public interface FileService {
      * @param file
      * @return
      */
-    Result uploadFile(MultipartFile file,Integer userId);
+    Result uploadFile(MultipartFile file);
 
     /**
      * 文件下载
