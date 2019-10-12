@@ -11,22 +11,22 @@
     <result column="context" property="context" jdbcType="VARCHAR"/>
 </resultMap>
     <insert id="addMission" >
-        INSERT work1.mission(direction, time, context)
+        INSERT work.mission(direction, time, context)
         VALUE (#{direction},#{time},#{context})
     </insert>
 
     <insert id="addMissionFile" >
-        INSERT work1.mission(id,file_id)
+        INSERT work.mission(id,file_id)
         VALUE (#{missionId},#{fileId})
     </insert>
 
     <delete id="deleteMission">
-        DELETE FROM work1.mission
+        DELETE FROM work.mission
         WHERE id = #{missionId}
     </delete>
 
     <update id="updateMission">
-        UPDATE work1.mission
+        UPDATE work.mission
         SET context = #{context}
         WHERE id = #{missionId}
     </update>
@@ -39,12 +39,12 @@
     
     <select id="searchMission" resultMap="mission">
         SELECT id,direction,time,context,file_id,creat_time
-        FROM work1.mission
+        FROM work.mission
         WHERE direction = #{direction}
     </select>
     <select id="searchMissionByMissionId" resultMap="mission">
         SELECT id,direction,time,context,file_id,creat_time
-        FROM work1.mission
+        FROM work.mission
         WHERE id = #{missionId}
     </select>
 
