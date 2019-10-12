@@ -7,6 +7,7 @@ import cn.edu.cqupt.mislab.work.exception.MyException;
 import cn.edu.cqupt.mislab.work.service.FileService;
 import cn.edu.cqupt.mislab.work.util.ResultUtil;
 import cn.edu.cqupt.mislab.work.util.FileUtils;
+import cn.edu.cqupt.mislab.work.util.ServiceUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -14,6 +15,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,7 +48,7 @@ public class FileServiceImpl implements FileService {
             assert fileName != null;
             String suffixName = fileName.substring(fileName.lastIndexOf("."));
             // 设置文件存储路径
-            String filePath = FileUtils.getFilePath().getAbsolutePath()+File.separator+md5+File.separator+fileName;
+            String filePath = FileUtils.getFilePath(md5,fileName).getAbsolutePath();
             //输出文件夹绝对路径
             System.out.println(filePath);
             //构建真实的文件路径
@@ -54,8 +56,8 @@ public class FileServiceImpl implements FileService {
             System.out.println(newFile.getAbsolutePath());
             //上传文件到绝对路径
             file.transferTo(newFile);
-            fileDao.uploadFile(fileName,filePath,md5);
-            return ResultUtil.success();
+            ServiceUtil.insertSuccess(fileDao.uploadFile(fileName,filePath,md5));
+            return ResultUtil.success(fileDao.getFileByMd5(md5));
         } catch (IOException | MyException e) {
             e.printStackTrace();
             return ResultUtil.error();
@@ -63,7 +65,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public Result downloadFile(Integer id, HttpServletResponse response) {
+    public Result downloadFile(Integer id, HttpServletResponse response) throws UnsupportedEncodingException {
 
         MyFile myFile = fileDao.getFile(id);
 
@@ -75,7 +77,8 @@ public class FileServiceImpl implements FileService {
                 // 设置强制下载不打开
                 response.setContentType("application/force-download");
                 // 设置文件名
-                response.addHeader("Content-Disposition", "attachment;fileName=" + myFile.getFileName());
+                String fileName = myFile.getFileName();
+                response.addHeader("Content-Disposition", "attachment;fileName=" + new String(fileName.getBytes(), StandardCharsets.UTF_8));
                 byte[] buffer = new byte[1024];
                 FileInputStream fis = null;
                 BufferedInputStream bis = null;
@@ -121,13 +124,13 @@ public class FileServiceImpl implements FileService {
         for (int i = 0; i < files.size(); ++i) {
             file = files.get(i);
             String md5 = FileUtils.getFileMd5String(file);
-            File filePath = FileUtils.getFilePath();
+            File filePath = FileUtils.getFilePath(md5,file.getOriginalFilename());
             if (!file.isEmpty()) {
                 try {
                     byte[] bytes = file.getBytes();
                     stream = new BufferedOutputStream(new FileOutputStream(
                             //设置文件路径及名字
-                            new File(filePath.getAbsolutePath() + File.separator + md5+ File.separator + file.getOriginalFilename())));
+                            new File(filePath.getAbsolutePath())));
                     // 写入
                     stream.write(bytes);
                     stream.close();

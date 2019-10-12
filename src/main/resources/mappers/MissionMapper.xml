@@ -2,14 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybaits.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.cqupt.mislab.work.dao.MissionDao">
-<resultMap id="mission" type="cn.edu.cqupt.mislab.work.domain.entity.Mission">
-    <result column="id" property="id" jdbcType="INTEGER"/>
-    <result column="direction" property="direction" jdbcType="INTEGER"/>
-    <result column="time" property="time" jdbcType="INTEGER"/>
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-    <result column="file_id" property="fileId" jdbcType="INTEGER"/>
-    <result column="context" property="context" jdbcType="VARCHAR"/>
-</resultMap>
+    <sql id="mission">
+        id,direction,time,creat_time,file_id,context
+    </sql>
     <insert id="addMission" >
         INSERT work1.mission(direction, time, context)
         VALUE (#{direction},#{time},#{context})
@@ -37,13 +32,15 @@
         WHERE id = #{missionId}
     </update>
     
-    <select id="searchMission" resultMap="mission">
-        SELECT id,direction,time,context,file_id,creat_time
+    <select id="searchMission" >
+        SELECT
+        <include refid="mission"/>
         FROM work1.mission
         WHERE direction = #{direction}
     </select>
-    <select id="searchMissionByMissionId" resultMap="mission">
-        SELECT id,direction,time,context,file_id,creat_time
+    <select id="searchMissionByMissionId">
+        SELECT
+        <include refid="mission"/>
         FROM work1.mission
         WHERE id = #{missionId}
     </select>

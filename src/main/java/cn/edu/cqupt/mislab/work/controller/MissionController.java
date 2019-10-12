@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * @program: work-Mis.Lab
@@ -33,6 +34,17 @@ public class MissionController {
     @Resource
     private MissionService missionService;
 
+    @ApiOperation(value = "登陆")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id",value = "用户id",dataType = "int",required = true),
+    })
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    public Result addMission(HttpServletRequest request, @RequestParam("id")Integer id) {
+        HttpSession session = request.getSession();
+        session.setAttribute("userId",id);
+        return ResultUtil.success(id);
+    }
+
     @ApiOperation(value = "添加任务")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "direction",value = "方向标识，1为前端，2为后台，3为python，4为Android",dataType = "int",required = true),
@@ -47,7 +59,6 @@ public class MissionController {
     @ApiOperation(value = "添加任务附件")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "missionId",value = "任务id",dataType = "int",required = true),
-            @ApiImplicitParam(name = "file",value = "任务附件",dataType = "MultipartFile")
     })
     @RequestMapping(value = "/addMissionFile",method = RequestMethod.POST)
     public Result addMissionFile(HttpServletRequest request, @RequestParam("missionId")Integer missionId,@RequestParam("file") MultipartFile file) {

@@ -18,6 +18,10 @@ spring:
     port: 6379
   session:
     store-type: redis
+  servlet:
+    multipart:
+      max-file-size: 64000MB
+      max-request-size: 6400MB
 mybatis:
   mapper-locations: classpath*:mappers/*.xml
   configuration:

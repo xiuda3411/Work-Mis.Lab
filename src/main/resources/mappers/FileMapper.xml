@@ -2,6 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybaits.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.cqupt.mislab.work.dao.FileDao">
+    <sql id="file">
+        id,file_name,file_path,md5
+    </sql>
     <insert id="uploadFile">
         INSERT file(file_name,file_path,md5)
         VALUE (#{fileName},#{filePath},#{md5})
@@ -12,8 +15,15 @@
         WHERE md5 = #{md5}
     </select>
     <select id="getFile" resultType="cn.edu.cqupt.mislab.work.domain.entity.MyFile">
-        SELECT file_name
+        SELECT
+        <include refid="file"/>
         FROM file
         WHERE id = #{id}
+    </select>
+    <select id="getFileByMd5" resultType="cn.edu.cqupt.mislab.work.domain.entity.MyFile">
+        SELECT
+        <include refid="file"/>
+        FROM file
+        WHERE md5 = #{md5}
     </select>
 </mapper>

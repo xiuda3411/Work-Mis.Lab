@@ -33,5 +33,11 @@ public interface FileDao {
      * @return
      */
     MyFile getFile(@Param("id")Integer id);
+    /**
+     * 通过文件md5值获取文件的信息
+     * @param md5
+     * @return
+     */
+    MyFile getFileByMd5(@Param("md5")String md5);
 
 }
