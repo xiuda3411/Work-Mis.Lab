@@ -8,6 +8,7 @@ import cn.edu.cqupt.mislab.work.service.FileService;
 import cn.edu.cqupt.mislab.work.util.ResultUtil;
 import cn.edu.cqupt.mislab.work.util.FileUtils;
 import cn.edu.cqupt.mislab.work.util.ServiceUtil;
+import com.sun.deploy.net.URLEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -77,8 +78,11 @@ public class FileServiceImpl implements FileService {
                 // 设置强制下载不打开
                 response.setContentType("application/force-download");
                 // 设置文件名
+                response.reset();
                 String fileName = myFile.getFileName();
-                response.addHeader("Content-Disposition", "attachment;fileName=" + new String(fileName.getBytes(), StandardCharsets.UTF_8));
+                fileName = new String(fileName.getBytes(), StandardCharsets.UTF_8);
+                response.setHeader("Content-Disposition","attachment; filename=" + fileName);
+                response.setContentType("application/octet-stream;charset=UTF-8");
                 byte[] buffer = new byte[1024];
                 FileInputStream fis = null;
                 BufferedInputStream bis = null;
