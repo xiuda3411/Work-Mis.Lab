@@ -19,10 +19,10 @@ public class FileUtils {
 
     public final static String UPLOAD_PATH_PREFIX = "static/upload";
 
-    public static File getFilePath(){
+    public static File getFilePath(String md5,String fileName){
 
         // 构建上传文件的存放 "文件夹" 路径
-        String fileDirPath = "src/main/resources/" + UPLOAD_PATH_PREFIX;
+        String fileDirPath = "src/main/resources/" + UPLOAD_PATH_PREFIX+File.separator+md5+File.separator+fileName;
 
         File fileDir = new File(fileDirPath);
         if(!fileDir.exists()){

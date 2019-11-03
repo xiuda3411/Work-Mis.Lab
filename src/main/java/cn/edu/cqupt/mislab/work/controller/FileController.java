@@ -14,6 +14,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+
 /**
  * @program: work-Mis.Lab
  * @description: 文件上传控制类
@@ -61,6 +63,11 @@ public class FileController {
             e.printStackTrace();
             return ResultUtil.notLogin();
         }
-        return fileService.downloadFile(fid,response);
+        try {
+            return fileService.downloadFile(fid,response);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return ResultUtil.error();
+        }
     }
 }
