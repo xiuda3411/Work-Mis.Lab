@@ -8,7 +8,6 @@ import cn.edu.cqupt.mislab.work.service.FileService;
 import cn.edu.cqupt.mislab.work.util.ResultUtil;
 import cn.edu.cqupt.mislab.work.util.FileUtils;
 import cn.edu.cqupt.mislab.work.util.ServiceUtil;
-import com.sun.deploy.net.URLEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -41,7 +40,7 @@ public class FileServiceImpl implements FileService {
                 throw new MyException(ResultEnum.ISEXIST);
             }
             if (file.isEmpty()) {
-                return ResultUtil.notExist();
+                return ResultUtil.isNull();
             }
             // 获取文件名
             String fileName = file.getOriginalFilename();
@@ -70,7 +69,7 @@ public class FileServiceImpl implements FileService {
 
         MyFile myFile = fileDao.getFile(id);
 
-        if (myFile.getMd5() != null) {
+        if (myFile != null) {
             //设置文件路径
             File file = new File(myFile.getFilePath());
             //File file = new File(realPath , fileName);

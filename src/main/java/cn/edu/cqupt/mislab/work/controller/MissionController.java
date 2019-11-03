@@ -53,16 +53,26 @@ public class MissionController {
     })
     @RequestMapping(value = "/addMission",method = RequestMethod.POST)
     public Result addMission(HttpServletRequest request, @RequestParam("direction")Integer direction, @RequestParam("time")Integer time, @RequestParam("context")String context) {
-                return missionService.addMission(request, direction, time, context);
+        try {
+            ControllerUtil.userIdIsNull(request);
+        } catch (MyException e) {
+            e.printStackTrace();
+            return ResultUtil.notLogin();
+        }
+        return missionService.addMission(request, direction, time, context);
     }
 
     @ApiOperation(value = "添加任务附件")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "missionId",value = "任务id",dataType = "int",required = true),
-    })
+    @ApiImplicitParam(name = "missionId",value = "任务id",dataType = "int",required = true)
     @RequestMapping(value = "/addMissionFile",method = RequestMethod.POST)
     public Result addMissionFile(HttpServletRequest request, @RequestParam("missionId")Integer missionId,@RequestParam("file") MultipartFile file) {
-            return missionService.addMissionFile(request, missionId, file);
+        try {
+            ControllerUtil.userIdIsNull(request);
+        } catch (MyException e) {
+            e.printStackTrace();
+            return ResultUtil.notLogin();
+        }
+        return missionService.addMissionFile(request, missionId, file);
     }
 
     @ApiOperation(value = "删除任务")
