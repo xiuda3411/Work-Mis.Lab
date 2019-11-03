@@ -6,10 +6,10 @@
         id,direction,time,create_time,file_id,context
     </sql>
     <insert id="addMission" >
-        INSERT work1.mission(direction, time, context)
+        INSERT work.mission(direction, time, context)
         VALUE (#{direction},#{time},#{context})
     </insert>
-
+  
     <update id="addMissionFile" >
         UPDATE work1.mission
         SET file_id = #{fileId}
@@ -17,7 +17,7 @@
     </update>
 
     <delete id="deleteMission">
-        DELETE FROM work1.mission
+        DELETE FROM work.mission
         WHERE id = #{missionId}
     </delete>
 
