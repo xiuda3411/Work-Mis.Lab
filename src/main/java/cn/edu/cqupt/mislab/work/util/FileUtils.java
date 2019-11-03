@@ -56,18 +56,27 @@ public class FileUtils {
     }
 
     public static boolean delFile(File file) {
-        if (!file.exists()) {
+        try{
+            if (file.isDirectory()) {
+                String[] children = file.list();
+                //递归删除目录中的子目录下
+                assert children != null;
+                for (String aChildren : children) {
+                    boolean success = delFile(new File(file, aChildren));
+                    if (!success) {
+                        System.out.println("删除失败");
+                        return false;
+                    }
+
+                }
+            }
+            // 目录此时为空，可以删除
+            System.out.println("删除成功");
+            return file.delete();
+        }catch(Exception e){
+            e.printStackTrace();
             return false;
         }
-
-        if (file.isDirectory()) {
-            File[] files = file.listFiles();
-            assert files != null;
-            for (File f : files) {
-                delFile(f);
-            }
-        }
-        return file.delete();
     }
-
 }
+

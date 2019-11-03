@@ -1,10 +1,7 @@
 package cn.edu.cqupt.mislab.work.domain.entity;
-
 import lombok.Data;
 import lombok.ToString;
-
 import java.sql.Timestamp;
-
 
 /**
  * @program: work-Mis.Lab
@@ -20,7 +17,6 @@ public class Mission {
     private int time;
     private int fileId;
     private Timestamp createTime;
-    private String fileName = "";
     private String context;
 
     public int getId() {

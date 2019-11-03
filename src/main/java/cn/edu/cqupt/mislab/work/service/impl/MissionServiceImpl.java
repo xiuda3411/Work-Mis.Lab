@@ -1,6 +1,5 @@
 package cn.edu.cqupt.mislab.work.service.impl;
-
-import ch.qos.logback.core.util.FileUtil;
+import cn.edu.cqupt.mislab.work.constant.ResultEnum;
 import cn.edu.cqupt.mislab.work.dao.FileDao;
 import cn.edu.cqupt.mislab.work.dao.MissionDao;
 import cn.edu.cqupt.mislab.work.domain.entity.Mission;
@@ -14,12 +13,10 @@ import cn.edu.cqupt.mislab.work.util.ResultUtil;
 import cn.edu.cqupt.mislab.work.util.ServiceUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @program: work-Mis.Lab
@@ -32,6 +29,7 @@ public class MissionServiceImpl implements MissionService {
 
     @Resource
     private MissionDao missionDao;
+    @Resource
     private FileDao fileDao;
     @Resource
     private FileService fileService;
@@ -62,7 +60,14 @@ public class MissionServiceImpl implements MissionService {
     public Result addMissionFile(HttpServletRequest request,Integer missionId, MultipartFile file) {
         try{
             MyFile myFile = (MyFile) fileService.uploadFile(file).getData();
-            ServiceUtil.insertSuccess(missionDao.addMissionFile(missionId,myFile.getId()));
+            if (myFile == null){
+                throw new MyException(ResultEnum.ERROR);
+            }
+            boolean flag = missionDao.addMissionFile(missionId,myFile.getId());
+            if(!flag){
+                deleteMissionFile(request, missionId);
+                throw new MyException(ResultEnum.ISEXIST);
+            }
             return ResultUtil.success();
         } catch (MyException e) {
             e.printStackTrace();
@@ -74,8 +79,13 @@ public class MissionServiceImpl implements MissionService {
     public Result deleteMission(HttpServletRequest request, Integer missionId) {
         try {
             Mission mission = missionDao.searchMissionByMissionId(missionId);
-            MyFile myFile = fileDao.getFile(mission.getFileId());
-            FileUtils.delFile(new File(myFile.getFilePath()));
+            int fileId = mission.getFileId();
+            System.out.println(fileId);
+            if (fileId != 0){
+                 MyFile myFile = fileDao.getFile(fileId);
+                FileUtils.delFile(new File(myFile.getFilePath()));
+            }
+
             ServiceUtil.deleteSuccess(missionDao.deleteMission(missionId));
             return ResultUtil.success();
         } catch (MyException e) {
@@ -88,13 +98,25 @@ public class MissionServiceImpl implements MissionService {
     public Result deleteMissionFile(HttpServletRequest request, Integer missionId) {
         try {
             Mission mission = missionDao.searchMissionByMissionId(missionId);
-            MyFile myFile = fileDao.getFile(mission.getFileId());
-            FileUtils.delFile(new File(myFile.getFilePath()));
-            ServiceUtil.deleteSuccess(missionDao.deleteMissionFile(missionId));
-            return ResultUtil.success();
+            if (mission == null) {
+                return ResultUtil.error("查无此任务");
+            } else {
+                System.out.println(mission.toString());
+                Integer fileId = mission.getFileId();
+                MyFile myFile = fileDao.getFile(fileId);
+                System.out.println(fileId);
+                if (myFile == null) {
+                    return ResultUtil.error("任务附件不存在");
+                } else {
+                    System.out.println(myFile.getFilePath());
+                    FileUtils.delFile(new File(new File(myFile.getFilePath()).getParent()));
+                    ServiceUtil.deleteSuccess(missionDao.deleteMissionFile(missionId));
+                    return ResultUtil.success();
+                }
+            }
         } catch (MyException e) {
             e.printStackTrace();
-            return ResultUtil.notExist();
+            return ResultUtil.error();
         }
     }
 
