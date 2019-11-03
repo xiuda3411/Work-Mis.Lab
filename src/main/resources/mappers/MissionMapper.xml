@@ -33,13 +33,13 @@
         WHERE id = #{missionId}
     </update>
     
-    <select id="searchMission" resultType="cn.edu.cqupt.mislab.work.domain.entity.Mission">
+    <select id="searchMission" >
         SELECT
         <include refid="mission"/>
         FROM work1.mission
         WHERE direction = #{direction}
     </select>
-    <select id="searchMissionByMissionId" resultType="cn.edu.cqupt.mislab.work.domain.entity.Mission">
+    <select id="searchMissionByMissionId">
         SELECT
         <include refid="mission"/>
         FROM work1.mission
