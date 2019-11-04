@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybaits.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.cqupt.mislab.work.dao.WorkDao">
+    <resultMap id="work" type="cn.edu.cqupt.mislab.work.domain.entity.Work">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="score" property="score" jdbcType="INTEGER"/>
+        <result column="mission_id" property="missionId" jdbcType="INTEGER"/>
+        <result column="file_id" property="fileId" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+    </resultMap>
+    <insert id="addWork">
+        INSERT work(mission_id,user_id,file_id)
+            VALUE (#{missionId},#{userId},#{fileId})
+    </insert>
+
+    <select id="searchWork" resultType="cn.edu.cqupt.mislab.work.domain.entity.Work">
+        SELECT id,mission_id,creat_time,user_id,score,file_id
+        FROM work
+        WHERE mission_id = #{missionId}
+    </select>
+
+    <select id="selectWorkById" resultMap="work">
+        SELECT *
+        FROM work
+        WHERE id = #{workId}
+    </select>
+
+    <delete id="deleteWork" parameterType="cn.edu.cqupt.mislab.work.domain.entity.Work">
+        DELETE
+        FROM work
+        WHERE id = #{workId}
+    </delete>
+
+</mapper>
