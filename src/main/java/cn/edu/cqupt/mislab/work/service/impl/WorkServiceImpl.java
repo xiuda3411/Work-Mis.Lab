@@ -29,13 +29,16 @@ import java.util.ArrayList;
 public class WorkServiceImpl implements WorkService {
     @Resource
     private WorkDao workDao;
+    @Resource
     private FileDao fileDao;
+    @Resource
     private FileService fileService;
 
     @Override
     public Result addWork(HttpServletRequest request, Integer missionId, Integer userId, MultipartFile file) {
         try{
             MyFile myFile = (MyFile) fileService.uploadFile(file).getData();
+            System.out.println(missionId+" "+userId+" "+myFile.getId());
             ServiceUtil.insertSuccess(workDao.addWork(missionId, userId, myFile.getId()));
             return ResultUtil.success();
         } catch (MyException e) {
@@ -45,12 +48,12 @@ public class WorkServiceImpl implements WorkService {
     }
 
     @Override
-    public Result deleteWork(HttpServletRequest request, Integer missionId) {
+    public Result deleteWork(HttpServletRequest request, Integer workId) {
         try {
-            Work work = workDao.selectWorkById(missionId);
+            Work work = workDao.selectWorkById(workId);
             MyFile myFile = fileDao.getFile(work.getFileId());
             FileUtils.delFile(new File(myFile.getFilePath()));
-            ServiceUtil.deleteSuccess(workDao.deleteWork(missionId));
+            ServiceUtil.deleteSuccess(workDao.deleteWork(workId));
             return ResultUtil.success();
         }catch (MyException e){
             e.printStackTrace();

@@ -23,10 +23,10 @@ public interface WorkDao {
 
     /**
      * 删除作业
-     * @param id
+     * @param workId
      * @return
      */
-    Boolean deleteWork(@Param("id") Integer id);
+    Boolean deleteWork(@Param("workId") Integer workId);
 
     /**
      * 查找作业
@@ -36,8 +36,8 @@ public interface WorkDao {
     ArrayList<Work> searchWork(@Param("missionId") Integer missionId);
 
     /**
-     * @param id
+     * @param workId
      * @return
      */
-    Work selectWorkById(@Param("id") Integer id);
+    Work selectWorkById(@Param("workId") Integer workId);
 }

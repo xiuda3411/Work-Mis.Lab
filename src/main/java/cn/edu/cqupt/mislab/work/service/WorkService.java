@@ -28,7 +28,7 @@ public interface WorkService {
      * @param missionId
      * @return
      */
-    Result deleteWork(HttpServletRequest request, @Param("WorkId") Integer missionId);
+    Result deleteWork(HttpServletRequest request, @Param("WorkId") Integer workId);
 
     /**
      * 查找作业

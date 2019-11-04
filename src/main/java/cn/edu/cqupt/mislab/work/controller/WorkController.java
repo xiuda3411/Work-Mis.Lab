@@ -52,14 +52,14 @@ public class WorkController {
     @ApiOperation(value = "删除作业")
     @ApiImplicitParam(name = "workId",value = "作业id",dataType = "int",required = true)
     @RequestMapping(value = "/deleteWork",method = RequestMethod.DELETE)
-    public Result deleteWork(HttpServletRequest request, @RequestParam("workId")Integer missionId) {
+    public Result deleteWork(HttpServletRequest request, @RequestParam("workId")Integer workId) {
         try{
             ControllerUtil.userIdIsNull(request);
         } catch (MyException e) {
             e.printStackTrace();
             return ResultUtil.notLogin();
         }
-        return workService.deleteWork(request, missionId);
+        return workService.deleteWork(request, workId);
     }
 
     @ApiOperation(value = "查询作业")
