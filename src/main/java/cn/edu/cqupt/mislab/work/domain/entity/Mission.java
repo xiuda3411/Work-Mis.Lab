@@ -1,6 +1,8 @@
 package cn.edu.cqupt.mislab.work.domain.entity;
 import lombok.Data;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
+
 import java.sql.Timestamp;
 
 /**
@@ -11,6 +13,7 @@ import java.sql.Timestamp;
  **/
 @Data
 @ToString
+@Slf4j
 public class Mission {
     private int id;
     private int direction;
@@ -18,52 +21,4 @@ public class Mission {
     private int fileId;
     private Timestamp createTime;
     private String context;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getDirection() {
-        return direction;
-    }
-
-    public void setDirection(int direction) {
-        this.direction = direction;
-    }
-
-    public int getTime() {
-        return time;
-    }
-
-    public void setTime(int time) {
-        this.time = time;
-    }
-
-    public int getFileId() {
-        return fileId;
-    }
-
-    public void setFileId(int fileId) {
-        this.fileId = fileId;
-    }
-
-    public Timestamp getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getContext() {
-        return context;
-    }
-
-    public void setContext(String context) {
-        this.context = context;
-    }
 }

@@ -1,7 +1,11 @@
 package cn.edu.cqupt.mislab.work.domain.po;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @program: work-Mis.Lab
@@ -11,42 +15,20 @@ import lombok.ToString;
  **/
 @ToString
 @Data
+@Slf4j
+@ApiModel
+@NoArgsConstructor
 public class Result<T> {
 
-    private Integer status;
-    private String msg;
-    private T data;
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
-    public Result() {
-    }
+    @ApiModelProperty("1 成功; 2  参数错误; 3  " +
+            "第三方服务错误;  4  服务器运行错误;  5  用户操作错误;  6  上传文件错误") private Integer status;
+    @ApiModelProperty("提示信息") private String msg;
+    @ApiModelProperty("业务数据") private T data;
 
     public Result(Integer status, String msg, T data) {
         this.status = status;
         this.msg = msg;
         this.data = data;
+        log.error(status+msg+data);
     }
 }

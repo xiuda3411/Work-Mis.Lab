@@ -2,6 +2,7 @@ package cn.edu.cqupt.mislab.work.domain.entity;
 
 import lombok.Data;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @program: work-Mis.Lab
@@ -11,6 +12,7 @@ import lombok.ToString;
  **/
 @Data
 @ToString
+@Slf4j
 public class Work {
     private int id;
     private int userId;

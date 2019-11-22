@@ -1,4 +1,4 @@
-package cn.edu.cqupt.mislab.work.domain.entity;
+package cn.edu.cqupt.mislab.work.domain.vo;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,18 +7,15 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @program: work-Mis.Lab
- * @description: 用户类
+ * @description: 用户登陆数据输入
  * @author: 宋丽
- * @create: 2019-10-10 16:21
+ * @create: 2019-11-21 19:06
  **/
-@Slf4j
 @Data
-@ToString
 @NoArgsConstructor
-public class User {
+@Slf4j
+@ToString
+public class UserVo {
     private String id;
-    private String userName;
     private String password;
-    private String email;
-    private Integer role;
 }
