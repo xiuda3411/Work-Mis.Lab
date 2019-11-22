@@ -26,4 +26,11 @@
         FROM file
         WHERE md5 = #{md5}
     </select>
+    <select id="fileName" resultType="string">
+        SELECT file_name
+        FROM file
+        WHERE id = #{fileId}
+    </select>
+
+
 </mapper>

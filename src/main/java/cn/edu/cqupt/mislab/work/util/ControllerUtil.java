@@ -12,11 +12,11 @@ import javax.servlet.http.HttpServletRequest;
  * @create: 2019-09-20 20:35
  **/
 public class ControllerUtil {
-    public static Integer userIdIsNull(HttpServletRequest request) throws MyException {
+    /*public static Integer userIdIsNull(HttpServletRequest request) throws MyException {
         Integer userId = GetUtil.getUserId(request);
         if (userId == null){
             throw new MyException(ResultEnum.NOLOGIN);
         }
         return userId;
-    }
+    }*/
 }

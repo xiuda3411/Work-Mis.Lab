@@ -13,7 +13,7 @@ public class GetUtil {
      * 从session里获取projectId
      * @return
      */
-    public static Integer getUserId(HttpServletRequest request){
+    /*public static Integer getUserId(HttpServletRequest request){
         return (Integer) request.getSession().getAttribute("userId");
-    }
+    }*/
 }
