@@ -19,9 +19,10 @@ public interface FileService {
     /**
      * 文件下载
      * @param id
+     * @param response
      * @return
      */
-    Result downloadFile(Integer id, HttpServletResponse response) throws UnsupportedEncodingException;
+    Result downloadFile(Integer id, HttpServletResponse response);
 
     /**
      * 批量文件上传
@@ -29,4 +30,11 @@ public interface FileService {
      * @return
      */
     Result uploadMultipleFiles(HttpServletRequest request);
+
+    /**
+     *
+     * @param fileId
+     * @return
+     */
+    Result fileName(Integer fileId);
 }

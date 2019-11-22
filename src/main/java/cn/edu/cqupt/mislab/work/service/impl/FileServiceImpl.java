@@ -8,6 +8,7 @@ import cn.edu.cqupt.mislab.work.service.FileService;
 import cn.edu.cqupt.mislab.work.util.ResultUtil;
 import cn.edu.cqupt.mislab.work.util.FileUtils;
 import cn.edu.cqupt.mislab.work.util.ServiceUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -65,7 +66,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public Result downloadFile(Integer id, HttpServletResponse response) throws UnsupportedEncodingException {
+    public Result downloadFile(Integer id, HttpServletResponse response){
 
         MyFile myFile = fileDao.getFile(id);
 
@@ -151,5 +152,11 @@ public class FileServiceImpl implements FileService {
             }
         }
         return ResultUtil.success();
+    }
+
+    @Override
+    public Result fileName(Integer fileId) {
+        String fileName = fileDao.fileName(fileId);
+        return ResultUtil.success(fileName);
     }
 }
