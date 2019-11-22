@@ -31,6 +31,7 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/Mission")
 @EnableRedisHttpSession
 public class MissionController {
+
     @Resource
     private MissionService missionService;
 
@@ -39,7 +40,7 @@ public class MissionController {
             @ApiImplicitParam(name = "id",value = "用户id",dataType = "int",required = true),
     })
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public Result addMission(HttpServletRequest request, @RequestParam("id")Integer id) {
+    public Result login(HttpServletRequest request, @RequestParam("id")Integer id) {
         HttpSession session = request.getSession();
         session.setAttribute("userId",id);
         return ResultUtil.success(id);
@@ -53,12 +54,6 @@ public class MissionController {
     })
     @RequestMapping(value = "/addMission",method = RequestMethod.POST)
     public Result addMission(HttpServletRequest request, @RequestParam("direction")Integer direction, @RequestParam("time")Integer time, @RequestParam("context")String context) {
-        try {
-            ControllerUtil.userIdIsNull(request);
-        } catch (MyException e) {
-            e.printStackTrace();
-            return ResultUtil.notLogin();
-        }
         return missionService.addMission(request, direction, time, context);
     }
 
@@ -66,12 +61,6 @@ public class MissionController {
     @ApiImplicitParam(name = "missionId",value = "任务id",dataType = "int",required = true)
     @RequestMapping(value = "/addMissionFile",method = RequestMethod.POST)
     public Result addMissionFile(HttpServletRequest request, @RequestParam("missionId")Integer missionId,@RequestParam("file") MultipartFile file) {
-        try {
-            ControllerUtil.userIdIsNull(request);
-        } catch (MyException e) {
-            e.printStackTrace();
-            return ResultUtil.notLogin();
-        }
         return missionService.addMissionFile(request, missionId, file);
     }
 
@@ -79,12 +68,6 @@ public class MissionController {
     @ApiImplicitParam(name = "missionId",value = "任务id",dataType = "int",required = true)
     @RequestMapping(value = "/deleteMission",method = RequestMethod.DELETE)
     public Result deleteMission(HttpServletRequest request, @RequestParam("missionId")Integer missionId) {
-        try {
-            ControllerUtil.userIdIsNull(request);
-        } catch (MyException e) {
-            e.printStackTrace();
-            return ResultUtil.notLogin();
-        }
         return missionService.deleteMission(request, missionId);
     }
 
@@ -92,12 +75,6 @@ public class MissionController {
     @ApiImplicitParam(name = "missionId",value = "任务id",dataType = "int",required = true)
     @RequestMapping(value = "/deleteMissionFile",method = RequestMethod.DELETE)
     public Result deleteMissionFile(HttpServletRequest request, @RequestParam("missionId")Integer missionId) {
-        try {
-            ControllerUtil.userIdIsNull(request);
-        } catch (MyException e) {
-            e.printStackTrace();
-            return ResultUtil.notLogin();
-        }
         return missionService.deleteMissionFile(request, missionId);
     }
 
@@ -109,12 +86,6 @@ public class MissionController {
     })
     @RequestMapping(value = "/updateMission",method = RequestMethod.POST)
     public Result updateMission(HttpServletRequest request, @RequestParam("missionId")Integer missionId, @RequestParam("context")String context,@RequestParam("file") MultipartFile file) {
-        try {
-            ControllerUtil.userIdIsNull(request);
-        } catch (MyException e) {
-            e.printStackTrace();
-            return ResultUtil.notLogin();
-        }
         return missionService.updateMission(request, missionId, context);
     }
 
@@ -124,12 +95,13 @@ public class MissionController {
     @ApiImplicitParam(name = "direction",value = "方向标识，1为前端，2为后台，3为python，4为Android",dataType = "int",required = true)
     @RequestMapping(value = "/searchMission",method = RequestMethod.GET)
     public Result searchMission(HttpServletRequest request, @RequestParam("direction")Integer direction) {
-        try {
-            ControllerUtil.userIdIsNull(request);
-        } catch (MyException e) {
-            e.printStackTrace();
-            return ResultUtil.notLogin();
-        }
+        return missionService.searchMission(request, direction);
+    }
+
+    @ApiOperation(value = "更新公告栏")
+    @ApiImplicitParam(name = "direction",value = "方向标识，1为前端，2为后台，3为python，4为Android",dataType = "int",required = true)
+    @RequestMapping(value = "/updateNotice",method = RequestMethod.GET)
+    public Result updateNotice(HttpServletRequest request, @RequestParam("direction")Integer direction) {
         return missionService.searchMission(request, direction);
     }
 }

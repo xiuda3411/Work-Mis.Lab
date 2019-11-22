@@ -6,6 +6,8 @@ import cn.edu.cqupt.mislab.work.util.ControllerUtil;
 import cn.edu.cqupt.mislab.work.util.GetUtil;
 import cn.edu.cqupt.mislab.work.util.ResultUtil;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.web.bind.annotation.*;
@@ -27,47 +29,35 @@ import java.io.UnsupportedEncodingException;
 @RequestMapping("/File")
 @EnableRedisHttpSession
 public class FileController {
+
     @Resource
     private FileService fileService;
+
+    @ApiOperation(value = "返回文件名")
+    @ApiImplicitParam(name = "fileId",value = "文件id")
+    @RequestMapping(value = "/returnFileName",method = RequestMethod.GET)
+    public Result returnFileName(@RequestParam("fileId")Integer fileId){
+        return fileService.fileName(fileId);
+    }
 
     @ApiOperation(value = "文件上传")
     @RequestMapping(value = "/upload",method = RequestMethod.POST)
     public Result upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
-        try {
-            ControllerUtil.userIdIsNull(request);
-        } catch (MyException e) {
-            e.printStackTrace();
-            return ResultUtil.notLogin();
-        }
         return fileService.uploadFile(file);
     }
 
     @ApiOperation(value = "文件批量上传")
     @RequestMapping(value = "/batch",method = RequestMethod.POST)
     public Result uploadMultipleFiles(HttpServletRequest request) {
-        try {
-            ControllerUtil.userIdIsNull(request);
-        } catch (MyException e) {
-            e.printStackTrace();
-            return ResultUtil.notLogin();
-        }
         return fileService.uploadMultipleFiles(request);
     }
 
     @ApiOperation(value = "文件下载")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "fileId",value = "文件id",dataType = "int",required = true),
+    })
     @RequestMapping(value = "/download",method = RequestMethod.GET)
-        public Result downloadFile(Integer fid,HttpServletRequest request,HttpServletResponse response) {
-        try {
-            ControllerUtil.userIdIsNull(request);
-        } catch (MyException e) {
-            e.printStackTrace();
-            return ResultUtil.notLogin();
-        }
-        try {
-            return fileService.downloadFile(fid,response);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return ResultUtil.error();
-        }
+    public Result downloadFile(Integer fileId,HttpServletRequest request,HttpServletResponse response) {
+        return fileService.downloadFile(fileId,response);
     }
 }

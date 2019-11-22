@@ -39,12 +39,6 @@ public class WorkController {
     })
     @RequestMapping(value = "/addWork",method = RequestMethod.POST)
     public Result addWork(HttpServletRequest request, @RequestParam("missionId")Integer missionId, @RequestParam("userId")Integer userId, @RequestParam("file") MultipartFile file) {
-        try{
-            ControllerUtil.userIdIsNull(request);
-        } catch (MyException e) {
-            e.printStackTrace();
-            return ResultUtil.notLogin();
-        }
         return workService.addWork(request,missionId,userId,file);
 
     }
@@ -53,12 +47,6 @@ public class WorkController {
     @ApiImplicitParam(name = "workId",value = "作业id",dataType = "int",required = true)
     @RequestMapping(value = "/deleteWork",method = RequestMethod.DELETE)
     public Result deleteWork(HttpServletRequest request, @RequestParam("workId")Integer workId) {
-        try{
-            ControllerUtil.userIdIsNull(request);
-        } catch (MyException e) {
-            e.printStackTrace();
-            return ResultUtil.notLogin();
-        }
         return workService.deleteWork(request, workId);
     }
 
@@ -66,12 +54,6 @@ public class WorkController {
     @ApiImplicitParam(name = "missionId",value = "任务id",dataType = "int",required = true)
     @RequestMapping(value = "/searchWork",method = RequestMethod.GET)
     public Result searchWork(HttpServletRequest request, @RequestParam("missionId")Integer missionId) {
-        try{
-            ControllerUtil.userIdIsNull(request);
-        } catch (MyException e) {
-            e.printStackTrace();
-            return ResultUtil.notLogin();
-        }
         return workService.searchWork(request, missionId);
     }
 }
