@@ -6,6 +6,7 @@ import cn.edu.cqupt.mislab.work.domain.entity.Mission;
 import cn.edu.cqupt.mislab.work.domain.entity.MyFile;
 import cn.edu.cqupt.mislab.work.domain.po.Result;
 import cn.edu.cqupt.mislab.work.exception.MyException;
+import cn.edu.cqupt.mislab.work.exception.ServerException;
 import cn.edu.cqupt.mislab.work.service.FileService;
 import cn.edu.cqupt.mislab.work.service.MissionService;
 import cn.edu.cqupt.mislab.work.util.FileUtils;
@@ -35,25 +36,20 @@ public class MissionServiceImpl implements MissionService {
     private FileService fileService;
 
     @Override
-    public Result addMission(HttpServletRequest request, Integer direction, Integer time, String context) {
+    public Result addMission(HttpServletRequest request, Integer courseId, Integer time, String context) {
         try{
-            ServiceUtil.insertSuccess(missionDao.addMission(direction, time, context));
+            ServiceUtil.insertSuccess(missionDao.addMission(courseId, time, context));
             return ResultUtil.success();
-        } catch (MyException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            return ResultUtil.error();
+            throw new ServerException("创建任务失败");
         }
     }
 
     @Override
     public Result updateMission(HttpServletRequest request,Integer missionId,String context) {
-        try{
             ServiceUtil.updateSuccess(missionDao.updateMission(missionId, context));
             return ResultUtil.success();
-        } catch (MyException e) {
-            e.printStackTrace();
-            return ResultUtil.error();
-        }
     }
 
     @Override
@@ -88,9 +84,9 @@ public class MissionServiceImpl implements MissionService {
 
             ServiceUtil.deleteSuccess(missionDao.deleteMission(missionId));
             return ResultUtil.success();
-        } catch (MyException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            return ResultUtil.notExist();
+            throw new ServerException("删除任务失败");
         }
     }
 
@@ -114,16 +110,16 @@ public class MissionServiceImpl implements MissionService {
                     return ResultUtil.success();
                 }
             }
-        } catch (MyException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            return ResultUtil.error();
+            throw new ServerException("删除任务失败");
         }
     }
 
     @Override
-    public Result searchMission(HttpServletRequest request, Integer direction) {
+    public Result searchMission(HttpServletRequest request, Integer courseId) {
         try {
-            ArrayList<Mission> list = missionDao.searchMission(direction);
+            ArrayList<Mission> list = missionDao.searchMission(courseId);
             return ResultUtil.success(list);
         }catch (Exception e){
             return ResultUtil.error();

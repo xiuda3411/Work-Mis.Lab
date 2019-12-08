@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 @Slf4j
 public class Mission {
     private int id;
-    private int direction;
+    private int courseId;
     private int time;
     private int fileId;
     private Timestamp createTime;

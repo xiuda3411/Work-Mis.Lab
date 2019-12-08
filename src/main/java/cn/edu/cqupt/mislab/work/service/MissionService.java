@@ -10,12 +10,12 @@ public interface MissionService {
     /**
      * 新增任务
      * @param request
-     * @param direction
+     * @param courseId
      * @param time
      * @param context
      * @return
      */
-    Result addMission(HttpServletRequest request, @RequestParam("direction")Integer direction, @RequestParam("time")Integer time, @RequestParam("context")String context);
+    Result addMission(HttpServletRequest request, @RequestParam("courseId")Integer courseId, @RequestParam("time")Integer time, @RequestParam("context")String context);
     /**
      * 删除任务
      * @param request
@@ -42,10 +42,10 @@ public interface MissionService {
     /**
      * 查询任务
      * @param request
-     * @param direction
+     * @param courseId
      * @return
      */
-    Result searchMission(HttpServletRequest request, @RequestParam("direction")Integer direction);
+    Result searchMission(HttpServletRequest request, @RequestParam("courseId")Integer courseId);
 
     /**
      * 删除任务附件

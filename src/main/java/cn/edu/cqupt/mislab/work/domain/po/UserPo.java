@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.Serializable;
+
 /**
  * @program: work-Mis.Lab
  * @description: 返回前端的用户信息
@@ -15,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @NoArgsConstructor
 @ToString
-public class UserPo {
+public class UserPo implements Serializable {
     private String id;
     private String userName;
     private String email;

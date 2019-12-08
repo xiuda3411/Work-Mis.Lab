@@ -13,12 +13,12 @@ import java.util.ArrayList;
 public interface MissionDao {
     /**
      * 添加任务
-     * @param direction
+     * @param courseId
      * @param time
      * @param context
      * @return
      */
-    Boolean addMission(@Param("direction")Integer direction, @Param("time")Integer time, @Param("context")String context);
+    Boolean addMission(@Param("courseId")Integer courseId, @Param("time")Integer time, @Param("context")String context);
     /**
      * 添加任务附件
      * @param missionId
@@ -41,11 +41,11 @@ public interface MissionDao {
      */
     Boolean updateMission(@Param("missionId")Integer missionId, @Param("context")String context);
     /**
-     * 通过direction查询任务
-     * @param direction
+     * 通过courseId查询任务
+     * @param courseId
      * @return
      */
-    ArrayList<Mission> searchMission(@Param("direction")Integer direction);
+    ArrayList<Mission> searchMission(@Param("courseId")Integer courseId);
     /**
      * 通过MissionId查询任务
      * @param missionId

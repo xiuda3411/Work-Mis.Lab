@@ -6,6 +6,7 @@ import cn.edu.cqupt.mislab.work.domain.entity.MyFile;
 import cn.edu.cqupt.mislab.work.domain.entity.Work;
 import cn.edu.cqupt.mislab.work.domain.po.Result;
 import cn.edu.cqupt.mislab.work.exception.MyException;
+import cn.edu.cqupt.mislab.work.exception.ServerException;
 import cn.edu.cqupt.mislab.work.service.FileService;
 import cn.edu.cqupt.mislab.work.service.WorkService;
 import cn.edu.cqupt.mislab.work.util.FileUtils;
@@ -41,9 +42,9 @@ public class WorkServiceImpl implements WorkService {
             System.out.println(missionId+" "+userId+" "+myFile.getId());
             ServiceUtil.insertSuccess(workDao.addWork(missionId, userId, myFile.getId()));
             return ResultUtil.success();
-        } catch (MyException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            return ResultUtil.error();
+            throw new ServerException("提交作业失败");
         }
     }
 
@@ -55,9 +56,9 @@ public class WorkServiceImpl implements WorkService {
             FileUtils.delFile(new File(myFile.getFilePath()));
             ServiceUtil.deleteSuccess(workDao.deleteWork(workId));
             return ResultUtil.success();
-        }catch (MyException e){
+        }catch (Exception e){
             e.printStackTrace();
-            return ResultUtil.notExist();
+            throw new ServerException("删除作业失败");
         }
     }
 

@@ -7,6 +7,7 @@ import cn.edu.cqupt.mislab.work.domain.po.Result;
 import cn.edu.cqupt.mislab.work.domain.po.UserPo;
 import cn.edu.cqupt.mislab.work.domain.vo.UserVo;
 import cn.edu.cqupt.mislab.work.exception.MyException;
+import cn.edu.cqupt.mislab.work.exception.ServerException;
 import cn.edu.cqupt.mislab.work.service.UserService;
 import cn.edu.cqupt.mislab.work.util.ResultUtil;
 import cn.edu.cqupt.mislab.work.util.ServiceUtil;
@@ -27,20 +28,18 @@ import javax.servlet.http.HttpSession;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Resource
-    private UserDao userDao;
 
     @Resource
-    private RedisTemplate<String, String> redisTemplate;
+    private UserDao userDao;
 
     @Override
     public Result register(User user) {
         try {
             ServiceUtil.insertSuccess(userDao.registerUser(user.getId(),user.getUserName(),user.getPassword(),user.getEmail(),user.getRole()));
             return ResultUtil.success();
-        } catch (MyException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            return ResultUtil.error("注册失败");
+            throw new ServerException("注册失败");
         }
     }
 
@@ -50,15 +49,16 @@ public class UserServiceImpl implements UserService {
         try {
             HttpSession session = request.getSession();
             UserPo userPo = userDao.loginUser(userVo.getId(),userVo.getPassword());
+
             if (userPo == null){
                 throw new MyException(ResultEnum.NOTEXIST);
             }else {
-                redisTemplate.opsForValue().set(session.getId(),userPo.toString());
+                session.setAttribute("userInfo",userPo);
                 return ResultUtil.success(userPo);
             }
         } catch (MyException e) {
             e.printStackTrace();
-            return ResultUtil.error("密码错误");
+            return ResultUtil.error();
         }
     }
 
@@ -67,12 +67,16 @@ public class UserServiceImpl implements UserService {
                          HttpServletResponse response) {
         try {
             HttpSession session=request.getSession();
-            session.invalidate();
-            redisTemplate.delete(session.getId());
-            return ResultUtil.success();
+            Object o = session.getAttribute("userInfo");
+            if (o == null){
+                return ResultUtil.success("登出失败，未登录");
+            }else {
+                session.removeAttribute("userInfo");
+                return ResultUtil.success("登出成功");
+            }
         }catch (Exception e){
             e.printStackTrace();
-            return ResultUtil.error("未知错误");
+            return ResultUtil.error("未知错误,登出失败");
         }
 
     }

@@ -48,13 +48,13 @@ public class MissionController {
 
     @ApiOperation(value = "添加任务")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "direction",value = "方向标识，1为前端，2为后台，3为python，4为Android",dataType = "int",required = true),
+            @ApiImplicitParam(name = "courseId",value = "方向标识，1为前端，2为后台，3为python，4为Android",dataType = "int",required = true),
             @ApiImplicitParam(name = "time",value = "第几次作业，比如1是第一次，2是第二次",dataType = "int",required = true),
             @ApiImplicitParam(name = "context",value = "任务内容",dataType = "String",required = true),
     })
     @RequestMapping(value = "/addMission",method = RequestMethod.POST)
-    public Result addMission(HttpServletRequest request, @RequestParam("direction")Integer direction, @RequestParam("time")Integer time, @RequestParam("context")String context) {
-        return missionService.addMission(request, direction, time, context);
+    public Result addMission(HttpServletRequest request, @RequestParam("courseId")Integer courseId, @RequestParam("time")Integer time, @RequestParam("context")String context) {
+        return missionService.addMission(request, courseId, time, context);
     }
 
     @ApiOperation(value = "添加任务附件")
@@ -92,16 +92,16 @@ public class MissionController {
 
 
     @ApiOperation(value = "查询任务")
-    @ApiImplicitParam(name = "direction",value = "方向标识，1为前端，2为后台，3为python，4为Android",dataType = "int",required = true)
+    @ApiImplicitParam(name = "courseId",value = "方向标识，1为前端，2为后台，3为python，4为Android",dataType = "int",required = true)
     @RequestMapping(value = "/searchMission",method = RequestMethod.GET)
-    public Result searchMission(HttpServletRequest request, @RequestParam("direction")Integer direction) {
-        return missionService.searchMission(request, direction);
+    public Result searchMission(HttpServletRequest request, @RequestParam("courseId")Integer courseId) {
+        return missionService.searchMission(request, courseId);
     }
 
     @ApiOperation(value = "更新公告栏")
-    @ApiImplicitParam(name = "direction",value = "方向标识，1为前端，2为后台，3为python，4为Android",dataType = "int",required = true)
+    @ApiImplicitParam(name = "courseId",value = "方向标识，1为前端，2为后台，3为python，4为Android",dataType = "int",required = true)
     @RequestMapping(value = "/updateNotice",method = RequestMethod.GET)
-    public Result updateNotice(HttpServletRequest request, @RequestParam("direction")Integer direction) {
-        return missionService.searchMission(request, direction);
+    public Result updateNotice(HttpServletRequest request, @RequestParam("courseId")Integer courseId) {
+        return missionService.searchMission(request, courseId);
     }
 }
