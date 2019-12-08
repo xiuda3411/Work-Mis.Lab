@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybaits.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.cqupt.mislab.work.dao.UserDao">
+    <resultMap id="UserPo" type="cn.edu.cqupt.mislab.work.domain.po.UserPo">
+        <id property="id" column="id"/>
+        <result property="userName" column="user_name"/>
+        <result property="email" column="email"/>
+        <result property="role" column="role"/>
+    </resultMap>
+
+<sql id="userPo">
+    id,user_name,email,role
+</sql>
+
+    <insert id="registerUser">
+        INSERT work1.user(id,user_name, password,email,role)
+        VALUES (#{id},#{userName},#{password},#{email},#{role})
+    </insert>
+    <select id="loginUser" resultMap="UserPo">
+        SELECT
+          <include refid="userPo"/>
+        FROM work1.user
+        WHERE id = #{id} AND password = #{password}
+    </select>
+</mapper>

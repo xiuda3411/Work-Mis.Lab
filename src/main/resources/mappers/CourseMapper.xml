@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybaits.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.cqupt.mislab.work.dao.CourseDao">
+<resultMap id="CourseMap" type="cn.edu.cqupt.mislab.work.domain.entity.Course">
+    <id property="id" column="id"/>
+    <result property="name" column="name"/>
+    <result property="teacher" column="teacher"/>
+    <result property="studentNum" column="student_num"/>
+</resultMap>
+
+    <sql id="course">
+        id,name,teacher,student_num
+    </sql>
+
+
+    <insert id="addCourse" >
+        INSERT INTO course(name, teacher)
+        VALUES(#{name},#{teacher})
+        <selectKey keyColumn="id" keyProperty="id" order="AFTER"
+                   resultType="int">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <update id="updateCourse">
+        UPDATE course
+        SET name = #{name},teacher = #{teacher}
+        WHERE id = #{id}
+    </update>
+
+    <update id="plusOne">
+        UPDATE course
+        SET student_num = student_num+1
+        WHERE id = #{courseId}
+    </update>
+
+    <delete id="deleteCourse">
+        DELETE FROM course
+        WHERE id = #{id}
+    </delete>
+
+    <select id="selectAllCourse" resultMap="CourseMap">
+        SELECT <include refid="course"/>
+        FROM course
+    </select>
+
+    <select id="selectCourseById" resultMap="CourseMap">
+        SELECT <include refid="course"/>
+        FROM course
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectCourseByName" resultMap="CourseMap">
+        SELECT <include refid="course"/>
+        FROM course
+        WHERE name LIKE concat(concat('%',#{name},'%'))
+    </select>
+</mapper>

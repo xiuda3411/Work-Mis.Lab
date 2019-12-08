@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybaits.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.cqupt.mislab.work.dao.StudentCourseDao">
+    <resultMap id="CourseMap" type="cn.edu.cqupt.mislab.work.domain.entity.Course">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="teacher" column="teacher"/>
+        <result property="studentNum" column="student_num"/>
+    </resultMap>
+
+    <resultMap id="studentCourse" type="cn.edu.cqupt.mislab.work.domain.entity.StudentCourse">
+        <result property="courseId" column="course_id"/>
+        <result property="studentId" column="student_id"/>
+    </resultMap>
+
+    <sql id="course">
+        id,name,teacher,student_num
+    </sql>
+
+    <insert id="studentAddCourse">
+        INSERT INTO student_course(student_id, course_id)
+        VALUES (#{studentId},#{courseId})
+    </insert>
+
+    <delete id="studentDeleteCourse">
+        DELETE FROM student_course
+        WHERE student_id = #{studentId} AND course_id = #{courseId}
+    </delete>
+
+    <select id="studentAllCourse" resultMap="CourseMap">
+        SELECT
+            <include refid="course"/>
+        FROM course
+        WHERE course.id IN (
+            SELECT student_course.course_id FROM student_course WHERE student_course.student_id = #{studentId}
+        )
+    </select>
+
+</mapper>

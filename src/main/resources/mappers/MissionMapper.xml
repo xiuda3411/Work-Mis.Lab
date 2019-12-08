@@ -3,11 +3,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.cqupt.mislab.work.dao.MissionDao">
     <sql id="mission">
-        id,direction,time,create_time,file_id,context
+        id,courseId,time,create_time,file_id,context
     </sql>
     <insert id="addMission" >
-        INSERT work1.mission(direction, time, context)
-        VALUE (#{direction},#{time},#{context})
+        INSERT work1.mission(course_id, time, context)
+        VALUE (#{courseId},#{time},#{context})
     </insert>
 
     <update id="addMissionFile" >
@@ -37,7 +37,7 @@
         SELECT
         <include refid="mission"/>
         FROM work1.mission
-        WHERE direction = #{direction}
+        WHERE course_id = #{courseId}
     </select>
     <select id="searchMissionByMissionId" resultType="cn.edu.cqupt.mislab.work.domain.entity.Mission">
         SELECT

@@ -24,6 +24,9 @@ public class FileDaoTest {
     @Autowired
     private FileDao fileDao;
 
+    @Autowired
+    private StudentCourseDao studentCourseDao;
+
     @Transactional
     @Test
     public void uploadFile(){
@@ -40,9 +43,16 @@ public class FileDaoTest {
 
     @Transactional
     @Test
+    public void studentAddCourse(){
+        Boolean flag = studentCourseDao.studentAddCourse(1,10);
+        System.out.println(flag);
+    }
+
+    @Transactional
+    @Test
     public void getFile(){
-        MyFile myFile = fileDao.getFile(4);
-        System.out.println(myFile.toString());
+       /* MyFile myFile = fileDao.getFile(4);
+        System.out.println(myFile.toString());*/
     }
 
 }
